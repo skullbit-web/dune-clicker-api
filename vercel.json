@@ -2,10 +2,10 @@
   "version": 2,
   "functions": {
     "api/leaderboard.js": {
-      "runtime": "edge"
+      "runtime": "@vercel/edge"
     },
     "api/submit.js": {
-      "runtime": "edge"
+      "runtime": "@vercel/edge"
     }
   },
   "routes": [
