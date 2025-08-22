@@ -3,13 +3,15 @@ import { get, set } from "@vercel/edge-config";
 const LEADERBOARD_KEY = "leaderboard";
 
 /**
- * API handler for Vercel (Edge Runtime)
+ * Node.js Serverless function for Vercel
  * Routes:
  *   GET  /api/leaderboard  -> returns sorted leaderboard
  *   POST /api/submit       -> submit new score
  */
 export default async function handler(req, res) {
-  if (req.method === "GET") {
+  const url = req.url || "";
+  
+  if (req.method === "GET" && url.endsWith("/leaderboard")) {
     try {
       const leaderboard = (await get(LEADERBOARD_KEY)) || [];
       const sorted = leaderboard.sort((a, b) => b.score - a.score).slice(0, 50);
@@ -20,7 +22,7 @@ export default async function handler(req, res) {
     }
   }
 
-  if (req.method === "POST") {
+  if (req.method === "POST" && url.endsWith("/submit")) {
     try {
       const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
       const { name, score } = body;
@@ -38,12 +40,12 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Invalid score range" });
       }
 
-      // ✅ Rate-limit by IP (simple in-memory for Edge)
+      // ✅ Rate-limit by IP (simple in-memory)
       const ip = req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown";
       const now = Date.now();
       if (!global.rateLimit) global.rateLimit = {};
       const lastSubmit = global.rateLimit[ip] || 0;
-      if (now - lastSubmit < 5000) { // 5 seconds cooldown
+      if (now - lastSubmit < 5000) {
         return res.status(429).json({ error: "Too many submissions" });
       }
       global.rateLimit[ip] = now;
@@ -72,5 +74,5 @@ export default async function handler(req, res) {
 }
 
 export const config = {
-  runtime: "edge", // 🚀 Runs on Vercel Edge
+  runtime: "nodejs16.x" // ✅ Node.js runtime
 };
