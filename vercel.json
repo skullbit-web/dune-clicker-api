@@ -2,13 +2,13 @@
   "version": 2,
   "routes": [
     {
-      "src": "/api/leaderboard",
-      "dest": "/api/index.js",
+      "src": "/API/leaderboard",
+      "dest": "/API/index.js",
       "methods": ["GET"]
     },
     {
-      "src": "/api/submit",
-      "dest": "/api/index.js",
+      "src": "/API/submit",
+      "dest": "/API/index.js",
       "methods": ["POST"]
     }
   ]
