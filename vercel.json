@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "functions": {
+    "api/leaderboard.js": {
+      "runtime": "edge"
+    },
+    "api/submit.js": {
+      "runtime": "edge"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/leaderboard",
+      "dest": "/api/leaderboard.js",
+      "headers": {
+        "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59"
+      }
+    },
+    {
+      "src": "/api/submit",
+      "dest": "/api/submit.js"
+    }
+  ]
+}
