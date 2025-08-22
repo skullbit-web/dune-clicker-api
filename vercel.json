@@ -1,24 +1,20 @@
 {
   "version": 2,
   "functions": {
-    "api/leaderboard.js": {
-      "runtime": "@vercel/edge"
-    },
-    "api/submit.js": {
-      "runtime": "@vercel/edge"
+    "api/index.js": {
+      "runtime": "nodejs16.x"
     }
   },
   "routes": [
     {
       "src": "/api/leaderboard",
-      "dest": "/api/leaderboard.js",
-      "headers": {
-        "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59"
-      }
+      "dest": "/api/index.js",
+      "methods": ["GET"]
     },
     {
       "src": "/api/submit",
-      "dest": "/api/submit.js"
+      "dest": "/api/index.js",
+      "methods": ["POST"]
     }
   ]
 }
